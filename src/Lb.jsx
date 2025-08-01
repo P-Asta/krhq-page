@@ -11,7 +11,17 @@ const Lb = () => {
     "3 Player",
     "4 Player",
   ];
-  const versionOptions = ["v0", "v72", "v69", "v68", "v67", "v66", "v56"];
+  const versionOptions = [
+    "v0",
+    "v40",
+    "v45",
+    "v49",
+    "v50",
+    "v56",
+    "v62",
+    "v64",
+    "v72",
+  ];
   const moonOptions = [
     "moon",
     "Experimentation",
