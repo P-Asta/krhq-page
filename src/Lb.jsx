@@ -1,20 +1,152 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import tw from "tailwind-styled-components";
 import { ChevronDown, Menu, X, Filter } from "lucide-react";
-import { useEffect } from "react";
 
 const Lb = () => {
-  const [selectedPlayers, setSelectedPlayers] = useState("0 Player");
-  const [selectedVersion, setSelectedVersion] = useState("v0");
-  const [selectedMoon, setSelectedMoon] = useState("moon");
+  // 옵션 배열들
+  const playerOptions = [
+    "0 Player",
+    "1 Player",
+    "2 Player",
+    "3 Player",
+    "4 Player",
+  ];
+  const versionOptions = ["v0", "v72", "v69", "v68", "v67", "v66", "v56"];
+  const moonOptions = [
+    "moon",
+    "Experimentation",
+    "Assurance",
+    "Vow",
+    "Offense",
+    "March",
+    "Adamance",
+    "Rend",
+    "Dine",
+    "Titan",
+    "Artifice",
+    "Embrion",
+  ];
+
+  // URL query parameter에서 초기값 가져오기
+  const getInitialValues = () => {
+    if (typeof window === "undefined") {
+      return {
+        players: "0 Player",
+        version: "v0",
+        moon: "moon",
+        tab: "HQ",
+      };
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const playersParam = params.get("players");
+    const versionParam = params.get("version");
+    const moonParam = params.get("moon");
+
+    return {
+      players: playersParam ? `${playersParam} Player` : "0 Player",
+      version: versionParam ? `v${versionParam}` : "v0",
+      moon: moonOptions[parseInt(moonParam || "0")] || "moon",
+      tab: params.get("tab") || "HQ",
+    };
+  };
+
+  const initialValues = getInitialValues();
+
+  const [selectedPlayers, setSelectedPlayers] = useState(initialValues.players);
+  const [selectedVersion, setSelectedVersion] = useState(initialValues.version);
+  const [selectedMoon, setSelectedMoon] = useState(initialValues.moon);
+  const [activeTab, setActiveTab] = useState(initialValues.tab);
   const [showPlayerDropdown, setShowPlayerDropdown] = useState(false);
   const [showVersionDropdown, setShowVersionDropdown] = useState(false);
   const [showMoonDropdown, setShowMoonDropdown] = useState(false);
-  const [activeTab, setActiveTab] = useState("HQ");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
 
   const [leaderboardData, setLeaderboardData] = useState([]);
+
+  // URL 업데이트 함수
+  const updateURL = (newParams) => {
+    if (typeof window === "undefined") return;
+
+    const params = new URLSearchParams(window.location.search);
+
+    // players: "2 Player" → "2", "0 Player" → 제거
+    const playersNum = newParams.players.split(" ")[0];
+    if (playersNum !== "0") {
+      params.set("players", playersNum);
+    } else {
+      params.delete("players");
+    }
+
+    // version: "v68" → "68", "v0" → 제거
+    const versionNum = newParams.version.substring(1);
+    if (versionNum !== "0") {
+      params.set("version", versionNum);
+    } else {
+      params.delete("version");
+    }
+
+    // moon: 인덱스로 저장
+    const moonIndex = moonOptions.indexOf(newParams.moon);
+    if (moonIndex > 0) {
+      params.set("moon", moonIndex.toString());
+    } else {
+      params.delete("moon");
+    }
+
+    if (newParams.tab !== "HQ") {
+      params.set("tab", newParams.tab);
+    } else {
+      params.delete("tab");
+    }
+
+    const newURL = `${window.location.pathname}${
+      params.toString() ? "?" + params.toString() : ""
+    }`;
+    window.history.replaceState({}, "", newURL);
+  };
+
+  // 필터 변경 시 URL 업데이트
+  const handlePlayersChange = (value) => {
+    setSelectedPlayers(value);
+    updateURL({
+      players: value,
+      version: selectedVersion,
+      moon: selectedMoon,
+      tab: activeTab,
+    });
+  };
+
+  const handleVersionChange = (value) => {
+    setSelectedVersion(value);
+    updateURL({
+      players: selectedPlayers,
+      version: value,
+      moon: selectedMoon,
+      tab: activeTab,
+    });
+  };
+
+  const handleMoonChange = (value) => {
+    setSelectedMoon(value);
+    updateURL({
+      players: selectedPlayers,
+      version: selectedVersion,
+      moon: value,
+      tab: activeTab,
+    });
+  };
+
+  const handleTabChange = (value) => {
+    setActiveTab(value);
+    updateURL({
+      players: selectedPlayers,
+      version: selectedVersion,
+      moon: selectedMoon,
+      tab: value,
+    });
+  };
 
   useEffect(() => {
     fetch("https://f.asta.rs/krhq/hqhq.json")
@@ -148,7 +280,7 @@ const Lb = () => {
               {["HQ", "SDC", "SMHQ"].map((tab) => (
                 <button
                   key={tab}
-                  onClick={() => setActiveTab(tab)}
+                  onClick={() => handleTabChange(tab)}
                   className={`px-3 sm:px-6 py-2 sm:py-2.5 text-xs sm:text-sm font-medium transition-colors rounded ${
                     activeTab === tab
                       ? "text-white"
@@ -176,44 +308,25 @@ const Lb = () => {
               </span>
               <Dropdown
                 value={selectedPlayers}
-                options={[
-                  "0 Player",
-                  "1 Player",
-                  "2 Player",
-                  "3 Player",
-                  "4 Player",
-                ]}
+                options={playerOptions}
                 isOpen={showPlayerDropdown}
                 setIsOpen={setShowPlayerDropdown}
-                onChange={setSelectedPlayers}
+                onChange={handlePlayersChange}
               />
               <Dropdown
                 value={selectedVersion}
-                options={["v0", "v69", "v68", "v67", "v66", "v56"]}
+                options={versionOptions}
                 isOpen={showVersionDropdown}
                 setIsOpen={setShowVersionDropdown}
-                onChange={setSelectedVersion}
+                onChange={handleVersionChange}
               />
               {(activeTab === "SMHQ" || activeTab === "SDC") && (
                 <Dropdown
                   value={selectedMoon}
-                  options={[
-                    "moon",
-                    "Experimentation",
-                    "Assurance",
-                    "Vow",
-                    "Offense",
-                    "March",
-                    "Adamance",
-                    "Rend",
-                    "Dine",
-                    "Titan",
-                    "Artifice",
-                    "Embrion",
-                  ]}
+                  options={moonOptions}
                   isOpen={showMoonDropdown}
                   setIsOpen={setShowMoonDropdown}
-                  onChange={setSelectedMoon}
+                  onChange={handleMoonChange}
                 />
               )}
             </div>
@@ -255,16 +368,10 @@ const Lb = () => {
                   </label>
                   <Dropdown
                     value={selectedPlayers}
-                    options={[
-                      "0 Player",
-                      "1 Player",
-                      "2 Player",
-                      "3 Player",
-                      "4 Player",
-                    ]}
+                    options={playerOptions}
                     isOpen={showPlayerDropdown}
                     setIsOpen={setShowPlayerDropdown}
-                    onChange={setSelectedPlayers}
+                    onChange={handlePlayersChange}
                   />
                 </div>
                 <div>
@@ -276,10 +383,10 @@ const Lb = () => {
                   </label>
                   <Dropdown
                     value={selectedVersion}
-                    options={["v0", "v69", "v68", "v67", "v66", "v56"]}
+                    options={versionOptions}
                     isOpen={showVersionDropdown}
                     setIsOpen={setShowVersionDropdown}
-                    onChange={setSelectedVersion}
+                    onChange={handleVersionChange}
                   />
                 </div>
                 {(activeTab === "SMHQ" || activeTab === "SDC") && (
@@ -292,23 +399,10 @@ const Lb = () => {
                     </label>
                     <Dropdown
                       value={selectedMoon}
-                      options={[
-                        "moon",
-                        "Experimentation",
-                        "Assurance",
-                        "Vow",
-                        "Offense",
-                        "March",
-                        "Adamance",
-                        "Rend",
-                        "Dine",
-                        "Titan",
-                        "Artifice",
-                        "Embrion",
-                      ]}
+                      options={moonOptions}
                       isOpen={showMoonDropdown}
                       setIsOpen={setShowMoonDropdown}
-                      onChange={setSelectedMoon}
+                      onChange={handleMoonChange}
                     />
                   </div>
                 )}
