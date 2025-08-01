@@ -160,7 +160,7 @@ const Lb = () => {
   };
 
   useEffect(() => {
-    fetch("https://f.asta.rs/krhq/hqhq.json")
+    fetch(`https://f.asta.rs/krhq/hqhq.json#${Number(new Date())}`)
       .then((res) => res.text())
       .then((data) => setLeaderboardData(eval(data)))
       .catch((err) => {
