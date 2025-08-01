@@ -109,6 +109,7 @@ const Lb = () => {
       params.set("tab", newParams.tab);
     } else {
       params.delete("tab");
+      params.delete("moon");
     }
 
     const newURL = `${window.location.pathname}${
