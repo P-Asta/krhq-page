@@ -347,9 +347,9 @@ const Home = () => {
                 <div className="grid grid-cols-2 gap-4 text-center">
                   <div className="bg-[#19181B]/50 rounded-lg p-4">
                     <div className="text-2xl font-bold text-[#7289DA] mb-1">
-                      500+
+                      10,000+
                     </div>
-                    <div className="text-sm text-gray-400">활성 멤버</div>
+                    <div className="text-sm text-gray-400">누적 플레이타임</div>
                   </div>
                   <div className="bg-[#19181B]/50 rounded-lg p-4">
                     <div className="text-2xl font-bold text-[#FFDF3E] mb-1">
