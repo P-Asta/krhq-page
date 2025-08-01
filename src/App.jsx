@@ -23,10 +23,12 @@ const App = () => {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center">
-              <img
-                src="logo.svg"
-                className="w-8 h-8 sm:w-10 sm:h-10 rounded mr-3"
-              />
+              <Link to="/">
+                <img
+                  src="logo.svg"
+                  className="w-8 h-8 sm:w-10 sm:h-10 rounded mr-3"
+                />
+              </Link>
             </div>
 
             {/* Desktop Navigation */}
@@ -156,44 +158,45 @@ const App = () => {
             <div>
               <h4 className="font-bold mb-3 text-[#FF3E3E]">빠른 링크</h4>
               <div className="space-y-2">
-                <a
-                  href="#rules"
+                <Link
+                  to="#rules"
                   className="block text-gray-400 hover:text-white transition-colors text-sm"
                 >
                   규칙
-                </a>
-                <a
-                  href="#leaderboards"
+                </Link>
+                <Link
+                  to="/lb"
                   className="block text-gray-400 hover:text-white transition-colors text-sm"
                 >
                   리더보드
-                </a>
-                <a
-                  href="https://g-blog.asta.rs"
+                </Link>
+                <Link
+                  to="https://guide.hqhq.kr"
                   target="_blank"
                   className="block text-gray-400 hover:text-white transition-colors text-sm"
                 >
                   가이드
-                </a>
+                </Link>
               </div>
             </div>
 
             <div>
               <h4 className="font-bold mb-3 text-[#FF3E3E]">커뮤니티</h4>
               <div className="space-y-2">
-                <a
-                  href="https://discord.gg/nxTAPrdJ3b"
+                <Link
+                  to="https://discord.gg/nxTAPrdJ3b"
                   target="_blank"
                   className="block text-gray-400 hover:text-white transition-colors text-sm"
                 >
                   Discord
-                </a>
-                <a
-                  href="https://docs.google.com/forms/d/e/1FAIpQLSfaq5xjxCFl08k0IlL-7FxVOcQD2LEpfOmxfKIfMH0ar1vvMw/viewform?usp=pp_url"
+                </Link>
+                <Link
+                  to="https://docs.google.com/forms/d/e/1FAIpQLSfaq5xjxCFl08k0IlL-7FxVOcQD2LEpfOmxfKIfMH0ar1vvMw/viewform?usp=pp_url"
+                  target="_blank"
                   className="block text-gray-400 hover:text-white transition-colors text-sm"
                 >
                   제출
-                </a>
+                </Link>
               </div>
             </div>
           </div>
