@@ -59,7 +59,7 @@ const App = () => {
                 Submissions
               </Link>
               <Link
-                to="https://g-blog.asta.rs"
+                to="https://guide.hqhq.kr"
                 target="_blank"
                 className="px-4 py-2 text-white hover:text-[#FF3E3E] transition-all text-sm  translate-1"
               >
