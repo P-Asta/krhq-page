@@ -56,7 +56,7 @@ const App = () => {
                 Leaderboards
               </Link>
               <Link
-                to="https://docs.google.com/forms/d/e/1FAIpQLSfaq5xjxCFl08k0IlL-7FxVOcQD2LEpfOmxfKIfMH0ar1vvMw/viewform?usp=pp_url"
+                to="/submit"
                 target="_blank"
                 className="px-4 py-2 text-white hover:text-[#FF3E3E] transition-all text-sm  translate-1"
               >
