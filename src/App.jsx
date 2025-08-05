@@ -100,14 +100,18 @@ const App = () => {
           <div className="md:hidden bg-[#2D2C30] border-t border-[#302F33]">
             <nav className="flex flex-col p-4 gap-2">
               <Link
-                to="#rules"
-                className="px-3 py-2 rounded text-white text-sm" 
+                to="/"
+                className={
+                  loc.pathname === "/"
+                    ? "px-3 py-2 rounded bg-[#FF3E3E] text-white text-sm"
+                    : "px-3 py-2 rounded text-white text-sm" 
+                }
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Rules
+                Home
               </Link>
               <Link
-                to="#leaderboards"
+                to="/lb"
                 className={
                   loc.pathname === "/lb"
                     ? "px-3 py-2 rounded bg-[#FF3E3E] text-white text-sm"
@@ -132,7 +136,7 @@ const App = () => {
               <Link
                 href="https://guide.hqhq.kr"
                 target="_blank"
-                className="text-white hover:text-[#FF3E3E] transition-colors text-sm py-2"
+                className="px-3 py-2 rounded text-white text-sm" 
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Guides
@@ -140,7 +144,7 @@ const App = () => {
               <Link
                 to="https://discord.gg/nxTAPrdJ3b"
                 target="_blank"
-                className="text-white hover:text-[#FF3E3E] transition-colors text-sm py-2"
+                className="px-3 py-2 rounded text-white text-sm" 
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Discord
