@@ -5,6 +5,8 @@ import { useEffect } from "react";
 import { Routes, Route, Link, useLocation } from "react-router-dom";
 import Home from "./Home.jsx";
 import Lb from "./Lb.jsx";
+import Submit from "./Submit.jsx";
+import AdminPage from "./AdminPage.jsx";
 
 const App = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -137,6 +139,8 @@ const App = () => {
       </header>
       <Routes>
         <Route path="/lb" element={<Lb />} />
+        <Route path="/submit" element={<Submit />} />
+        <Route path="/admin" element={<AdminPage />} />
         <Route path="/" element={<Home />} />
       </Routes>
 
