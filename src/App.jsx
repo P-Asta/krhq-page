@@ -99,43 +99,52 @@ const App = () => {
         {mobileMenuOpen && (
           <div className="md:hidden bg-[#2D2C30] border-t border-[#302F33]">
             <nav className="flex flex-col p-4 gap-2">
-              <a
-                href="#rules"
-                className="text-white hover:text-[#FF3E3E] transition-colors text-sm py-2"
+              <Link
+                to="#rules"
+                className="px-3 py-2 rounded text-white text-sm" 
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Rules
-              </a>
-              <a
-                href="#leaderboards"
-                className="px-3 py-2 rounded bg-[#FF3E3E] text-white text-sm"
+              </Link>
+              <Link
+                to="#leaderboards"
+                className={
+                  loc.pathname === "/lb"
+                    ? "px-3 py-2 rounded bg-[#FF3E3E] text-white text-sm"
+                    : "px-3 py-2 rounded text-white text-sm" 
+                }
+                
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Leaderboards
-              </a>
-              <a
-                href="#"
-                className="text-white hover:text-[#FF3E3E] transition-colors text-sm py-2"
+              </Link>
+              <Link
+                to="/submit"
+                className={
+                  loc.pathname === "/submit"
+                    ? "px-3 py-2 rounded bg-[#FF3E3E] text-white text-sm"
+                    : "px-3 py-2 rounded text-white text-sm" 
+                }
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Submissions
-              </a>
-              <a
-                href="https://g-blog.asta.rs"
+              </Link>
+              <Link
+                href="https://guide.hqhq.kr"
                 target="_blank"
                 className="text-white hover:text-[#FF3E3E] transition-colors text-sm py-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Guides
-              </a>
-              <a
-                href="https://discord.gg/nxTAPrdJ3b"
+              </Link>
+              <Link
+                to="https://discord.gg/nxTAPrdJ3b"
                 target="_blank"
                 className="text-white hover:text-[#FF3E3E] transition-colors text-sm py-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Discord
-              </a>
+              </Link>
             </nav>
           </div>
         )}
