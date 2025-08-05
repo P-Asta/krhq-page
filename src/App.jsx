@@ -57,8 +57,11 @@ const App = () => {
               </Link>
               <Link
                 to="/submit"
-                target="_blank"
-                className="px-4 py-2 text-white hover:text-[#FF3E3E] transition-all text-sm  translate-1"
+                className={
+                  loc.pathname === "/submit"
+                    ? "px-4 py-2 rounded text-white bg-[#FF3E3E] hover:bg-[#FF6666] transition-all text-sm translate-1"
+                    : "px-4 py-2 text-white hover:text-[#FF3E3E] transition-all text-sm  translate-1"
+                }
               >
                 Submissions
               </Link>
