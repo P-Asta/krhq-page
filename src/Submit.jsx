@@ -262,7 +262,7 @@ const Submit = () => {
         if (file) formDataToSend.append("vlog_files", file);
       });
 
-      const response = await fetch("http://localhost:8000/submit-record", {
+      const response = await fetch("https://api.hqhq.kr/submit-record", {
         method: "POST",
         body: formDataToSend,
       });
