@@ -142,7 +142,7 @@ const SubmissionAdmin = () => {
   const [vlogData, setVlogData] = useState({});
   const [loadingVlogs, setLoadingVlogs] = useState({});
 
-  const API_BASE_URL = "http://api.hqhq.kr";
+  const API_BASE_URL = "https://api.hqhq.kr";
 
   const categoryOptions = [
     "All",
