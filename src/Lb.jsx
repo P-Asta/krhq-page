@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import tw from "tailwind-styled-components";
 import { ChevronDown, Menu, X, Filter } from "lucide-react";
+import { Helmet } from "react-helmet-async";
 
 const Lb = () => {
   // 옵션 배열들
@@ -279,7 +280,15 @@ const Lb = () => {
       className="min-h-screen pt-30"
       style={{ backgroundColor: "#19181B", color: "#FFFFFF" }}
     >
-      {/* Header */}
+      {/* Meta */}
+      <Helmet>
+        <title>Korean High Quota</title>
+        <meta
+          property="og:description"
+          content="한국의 리썰컴퍼니 챌린지 리더보드"
+        />
+        <meta property="og:title" content="Korean High Quota" />
+      </Helmet>
 
       <div className="max-w-5xl mx-auto px-3 sm:px-6 py-4 sm:py-6">
         {/* Tabs and Filters */}

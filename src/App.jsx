@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from "react";
 import tw from "tailwind-styled-components";
 import { ChevronDown, Menu, X, Filter } from "lucide-react";
-import { useEffect } from "react";
 import { Routes, Route, Link, useLocation } from "react-router-dom";
 import Home from "./Home.jsx";
 import Lb from "./Lb.jsx";
@@ -104,7 +103,7 @@ const App = () => {
                 className={
                   loc.pathname === "/"
                     ? "px-3 py-2 rounded bg-[#FF3E3E] text-white text-sm"
-                    : "px-3 py-2 rounded text-white text-sm" 
+                    : "px-3 py-2 rounded text-white text-sm"
                 }
                 onClick={() => setMobileMenuOpen(false)}
               >
@@ -115,9 +114,8 @@ const App = () => {
                 className={
                   loc.pathname === "/lb"
                     ? "px-3 py-2 rounded bg-[#FF3E3E] text-white text-sm"
-                    : "px-3 py-2 rounded text-white text-sm" 
+                    : "px-3 py-2 rounded text-white text-sm"
                 }
-                
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Leaderboards
@@ -127,7 +125,7 @@ const App = () => {
                 className={
                   loc.pathname === "/submit"
                     ? "px-3 py-2 rounded bg-[#FF3E3E] text-white text-sm"
-                    : "px-3 py-2 rounded text-white text-sm" 
+                    : "px-3 py-2 rounded text-white text-sm"
                 }
                 onClick={() => setMobileMenuOpen(false)}
               >
@@ -136,7 +134,7 @@ const App = () => {
               <Link
                 href="https://guide.hqhq.kr"
                 target="_blank"
-                className="px-3 py-2 rounded text-white text-sm" 
+                className="px-3 py-2 rounded text-white text-sm"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Guides
@@ -144,7 +142,7 @@ const App = () => {
               <Link
                 to="https://discord.gg/nxTAPrdJ3b"
                 target="_blank"
-                className="px-3 py-2 rounded text-white text-sm" 
+                className="px-3 py-2 rounded text-white text-sm"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Discord

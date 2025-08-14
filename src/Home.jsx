@@ -11,6 +11,7 @@ import {
   Target,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 const Home = () => {
   const [activeRuleTab, setActiveRuleTab] = useState("general");
@@ -50,7 +51,7 @@ const Home = () => {
       "녹화는 버전 번호가 표시된 메인 메뉴 화면에서 시작해야 합니다.",
     ],
     sdc: [
-      "모든 제출은 선택한 카테고리의 상위 10위 안에 들어야 합니다.",
+      "모든 제출은 선택한 행성의 상위 10위 안에 들어야 합니다.",
       "녹화는 버전 번호가 표시된 메인 메뉴 화면에서 시작해야 합니다.",
       "녹화는 최종 '스크랩 수집' 화면이 완전히 표시된 후에만 종료할 수 있습니다.",
       "Player.log 파일은 SDC가 발생한 세션에 한해 제출이 필요합니다.",
@@ -100,7 +101,15 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-[#19181B] text-white overflow-x-hidden">
-      {/* Header */}
+      {/* Meta */}
+      <Helmet>
+        <title>Korean High Quota</title>
+        <meta
+          property="og:description"
+          content="Lethal Company의 극한 도전에 참여하세요. 최고의 플레이어들과 경쟁하며 새로운 기록을 세워보세요!"
+        />
+        <meta property="og:title" content="Korean High Quota" />
+      </Helmet>
 
       {/* Hero Section */}
       <section className="relative pt-24 pb-20 px-4">
