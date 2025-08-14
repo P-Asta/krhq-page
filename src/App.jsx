@@ -26,7 +26,7 @@ const App = () => {
             <div className="flex items-center">
               <Link to="/">
                 <img
-                  src="logo.svg"
+                  src="/logo.svg"
                   className="w-8 h-8 sm:w-10 sm:h-10 rounded mr-3"
                 />
               </Link>
