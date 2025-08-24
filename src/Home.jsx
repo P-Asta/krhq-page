@@ -76,7 +76,7 @@ const Home = () => {
       "VLog — HQHQTeam (모드를 사용하는 경우 필수)",
       "High_Quota_Fixes — Chboo1 (강력 추천)",
       "ShipLoot — tinyhoot",
-      "ShipLootCruiser — HQHQTeam"
+      "ShipLootCruiser — HQHQTeam",
       "MoreItems — Drakorle",
       "TooManyItems — mattymatty",
       "PathfindingLagFix — Zaggy1024",
