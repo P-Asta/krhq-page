@@ -46,7 +46,6 @@ const Home = () => {
       "정식 출시 버전만 허용됩니다. (v40, v45, v49, v50, v56, v62, v64, v69, v72)",
       "모든 도전은 커뮤니티 가이드라인을 준수해야 합니다.",
       "도전 중에는 참가자가 동일해야 합니다.",
-      "총 8개 이상의 할당량을 반드시 완료해야 합니다.",
       "모든 플레이어의 녹화는 필수이며, 영상은 영구 보존되어야 합니다.",
       "녹화는 버전 번호가 표시된 메인 메뉴 화면에서 시작해야 합니다.",
     ],
@@ -77,6 +76,7 @@ const Home = () => {
       "VLog — HQHQTeam (모드를 사용하는 경우 필수)",
       "High_Quota_Fixes — Chboo1 (강력 추천)",
       "ShipLoot — tinyhoot",
+      "ShipLootCruiser — HQHQTeam"
       "MoreItems — Drakorle",
       "TooManyItems — mattymatty",
       "PathfindingLagFix — Zaggy1024",
@@ -87,6 +87,7 @@ const Home = () => {
       "Loadstone — AdiBTW",
       "LightsOut — mrov",
       "StreamOverlays — Zehs",
+      "SellMyScrap — Zehs",
     ],
   };
 
