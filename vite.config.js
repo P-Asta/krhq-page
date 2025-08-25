@@ -10,7 +10,7 @@ export default defineConfig({
     react(),
     tailwindcss(),
     prerender({
-      routes: ["/", "/lb", "/submit"],
+      routes: ["/", "/lb", "/submit", "/admin"],
       renderer: new PuppeteerRenderer({
         renderAfterTime: 5000,
         headless: true,
