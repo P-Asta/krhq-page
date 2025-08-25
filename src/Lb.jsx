@@ -21,6 +21,7 @@ const Lb = () => {
     "v56",
     "v62",
     "v64",
+    "v69",
     "v72",
   ];
   const moonOptions = [
@@ -464,9 +465,12 @@ const Lb = () => {
                       {filteredData[0].fillQuota.toLocaleString()}
                     </>
                   )}
-                  <span className="text-lg sm:text-2xl text-gray-500 ml-1 sm:ml-2">
-                    q{filteredData[0].q.toLocaleString()}
-                  </span>
+                  {
+                    activeTab != "SDC" &&
+                      <span className="text-lg sm:text-2xl text-gray-500 ml-1 sm:ml-2">
+                        q{filteredData[0].q.toLocaleString()}
+                      </span>
+                  }
                 </div>
                 <div className="flex flex-wrap justify-center gap-2 sm:gap-4">
                   <BigTag>{filteredData[0].category}</BigTag>
@@ -503,9 +507,12 @@ const Lb = () => {
                           filteredData[0].fillQuota && (
                           <>/ {entry.maxQuota.toLocaleString()} </>
                         )}
-                        <span className="text-gray-500">
-                          q{entry.q.toLocaleString()}
-                        </span>
+                        {
+                          activeTab != "SDC" &&
+                            <span className="text-gray-500">
+                              q{entry.q.toLocaleString()}
+                            </span>
+                        }
                       </div>
                       <PlayerList
                         players={entry.players}
