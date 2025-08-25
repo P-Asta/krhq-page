@@ -1,5 +1,13 @@
 import React, { useState, useRef } from "react";
-import { ChevronDown, Upload, X, Plus, AlertCircle } from "lucide-react";
+import {
+  ChevronDown,
+  Upload,
+  X,
+  Plus,
+  AlertCircle,
+  Loader2,
+  CheckCircle,
+} from "lucide-react";
 import { Helmet } from "react-helmet-async";
 
 const Submit = () => {
@@ -25,6 +33,9 @@ const Submit = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [submissionId, setSubmissionId] = useState("");
 
   // Refs for focusing on error fields
   const fieldRefs = useRef({});
@@ -217,18 +228,21 @@ const Submit = () => {
     }
   };
 
+  const redirectToHome = () => {
+    // 실제 앱에서는 router를 사용하겠지만, 여기서는 window.location을 사용
+    window.location.href = "/";
+  };
+
   const handleSubmit = async () => {
     const validationErrors = validateForm();
 
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       focusFirstError(validationErrors);
-
-      // 에러 메시지 표시
-      const errorMessages = Object.values(validationErrors).join("\n");
-      //   alert(`다음 항목들을 확인해주세요:\n\n${errorMessages}`);
       return;
     }
+
+    setIsSubmitting(true);
 
     try {
       const formDataToSend = new FormData();
@@ -271,12 +285,15 @@ const Submit = () => {
       const result = await response.json();
 
       if (result.success) {
-        alert(`제출 완료! ID: ${result.submission_id}`);
+        setSubmissionId(result.submission_id);
+        setShowSuccessModal(true);
       } else {
         alert("제출 실패: " + result.message);
       }
     } catch (error) {
       alert("오류가 발생했습니다: " + error.message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -354,6 +371,51 @@ const Submit = () => {
       formData.category === "single_moon_hq"
     );
   };
+
+  // Loading Modal Component
+  const LoadingModal = () => (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-[#262428] rounded-lg p-8 max-w-sm mx-4 text-center">
+        <div className="flex justify-center mb-4">
+          <Loader2 className="w-12 h-12 text-[#FF3E3E] animate-spin" />
+        </div>
+        <h3 className="text-xl font-bold text-white mb-2">제출 중...</h3>
+        <p className="text-gray-400">
+          기록을 제출하고 있습니다. 잠시만 기다려주세요.
+        </p>
+      </div>
+    </div>
+  );
+
+  // Success Modal Component
+  const SuccessModal = () => (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-[#262428] rounded-lg p-8 max-w-md mx-4 text-center">
+        <div className="flex justify-center mb-4">
+          <CheckCircle className="w-16 h-16 text-green-500" />
+        </div>
+        <h3 className="text-2xl font-bold text-white mb-4">제출 완료!</h3>
+        <p className="text-gray-300 mb-2">기록이 성공적으로 제출되었습니다.</p>
+        <p className="text-[#FF3E3E] font-semibold mb-6">
+          제출 ID: {submissionId}
+        </p>
+        <div className="flex gap-3 justify-center">
+          <button
+            onClick={() => setShowSuccessModal(false)}
+            className="px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+          >
+            닫기
+          </button>
+          <button
+            onClick={redirectToHome}
+            className="px-6 py-2 bg-[#FF3E3E] text-white rounded-lg hover:opacity-90 transition-opacity"
+          >
+            메인으로
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <div
@@ -767,12 +829,22 @@ const Submit = () => {
           <div className="text-center pt-6">
             <button
               onClick={handleSubmit}
-              className="px-8 py-3 bg-[#FF3E3E] text-white font-bold rounded-lg hover:opacity-90 transition-opacity text-lg"
+              disabled={isSubmitting}
+              className={`px-8 py-3 font-bold rounded-lg text-lg transition-opacity flex items-center gap-2 mx-auto ${
+                isSubmitting
+                  ? "bg-gray-600 cursor-not-allowed"
+                  : "bg-[#FF3E3E] hover:opacity-90"
+              } text-white`}
             >
-              기록 제출하기
+              {isSubmitting && <Loader2 className="w-5 h-5 animate-spin" />}
+              {isSubmitting ? "제출 중..." : "기록 제출하기"}
             </button>
           </div>
         </div>
+
+        {/* Modals */}
+        {isSubmitting && <LoadingModal />}
+        {showSuccessModal && <SuccessModal />}
       </div>
     </div>
   );
