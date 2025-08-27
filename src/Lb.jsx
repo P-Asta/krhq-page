@@ -173,31 +173,33 @@ const Lb = () => {
 
   // 필터링된 데이터 계산
   const filteredData = useMemo(() => {
-    return leaderboardData.filter((entry) => {
-      // 탭 필터링
-      if (entry.category !== activeTab) return false;
+    return leaderboardData
+      .filter((entry) => {
+        // 탭 필터링
+        if (entry.category !== activeTab) return false;
 
-      // 플레이어 수 필터링 (0 Player는 필터 적용 안함)
-      if (selectedPlayers !== "0 Player") {
-        const playerCount = parseInt(selectedPlayers.split(" ")[0]);
-        if (entry.players.length !== playerCount) return false;
-      }
+        // 플레이어 수 필터링 (0 Player는 필터 적용 안함)
+        if (selectedPlayers !== "0 Player") {
+          const playerCount = parseInt(selectedPlayers.split(" ")[0]);
+          if (entry.players.length !== playerCount) return false;
+        }
 
-      // 버전 필터링 (v0는 필터 적용 안함)
-      if (selectedVersion !== "v0") {
-        if (entry.version !== selectedVersion) return false;
-      }
+        // 버전 필터링 (v0는 필터 적용 안함)
+        if (selectedVersion !== "v0") {
+          if (entry.version !== selectedVersion) return false;
+        }
 
-      // 맵/문 필터링 (moon은 필터 적용 안함, SDC와 SMHQ 탭에서만 적용)
-      if (
-        (activeTab === "SDC" || activeTab === "SMHQ") &&
-        selectedMoon !== "moon"
-      ) {
-        if (entry.moon !== selectedMoon) return false;
-      }
+        // 맵/문 필터링 (moon은 필터 적용 안함, SDC와 SMHQ 탭에서만 적용)
+        if (
+          (activeTab === "SDC" || activeTab === "SMHQ") &&
+          selectedMoon !== "moon"
+        ) {
+          if (entry.moon !== selectedMoon) return false;
+        }
 
-      return true;
-    });
+        return true;
+      })
+      .sort((x) => -x.maxQuota);
   }, [
     leaderboardData,
     activeTab,
@@ -465,12 +467,11 @@ const Lb = () => {
                       {filteredData[0].fillQuota.toLocaleString()}
                     </>
                   )}
-                  {
-                    activeTab != "SDC" &&
-                      <span className="text-lg sm:text-2xl text-gray-500 ml-1 sm:ml-2">
-                        q{filteredData[0].q.toLocaleString()}
-                      </span>
-                  }
+                  {activeTab != "SDC" && (
+                    <span className="text-lg sm:text-2xl text-gray-500 ml-1 sm:ml-2">
+                      q{filteredData[0].q.toLocaleString()}
+                    </span>
+                  )}
                 </div>
                 <div className="flex flex-wrap justify-center gap-2 sm:gap-4">
                   <BigTag>{filteredData[0].category}</BigTag>
@@ -507,12 +508,11 @@ const Lb = () => {
                           filteredData[0].fillQuota && (
                           <>/ {entry.maxQuota.toLocaleString()} </>
                         )}
-                        {
-                          activeTab != "SDC" &&
-                            <span className="text-gray-500">
-                              q{entry.q.toLocaleString()}
-                            </span>
-                        }
+                        {activeTab != "SDC" && (
+                          <span className="text-gray-500">
+                            q{entry.q.toLocaleString()}
+                          </span>
+                        )}
                       </div>
                       <PlayerList
                         players={entry.players}
