@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import tw from "tailwind-styled-components";
 import { ChevronDown, Menu, X, Filter } from "lucide-react";
 import { Routes, Route, Link, useLocation } from "react-router-dom";
@@ -10,6 +10,12 @@ import AdminPage from "./AdminPage.jsx";
 const App = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const loc = useLocation();
+
+  useEffect(() => {
+    setTimeout(() => {
+      document.dispatchEvent(new Event("render"));
+    }, 1000);
+  }, [loc.pathname]);
 
   return (
     <>

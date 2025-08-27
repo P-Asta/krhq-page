@@ -19,6 +19,7 @@ import {
   Eye,
   EyeOff,
 } from "lucide-react";
+import { Helmet } from "react-helmet-async";
 
 // LoginScreen 컴포넌트를 외부로 분리
 const LoginScreen = ({
@@ -34,6 +35,11 @@ const LoginScreen = ({
     className="min-h-screen flex items-center justify-center"
     style={{ backgroundColor: "#19181B" }}
   >
+    <Helmet>
+      <title>Admin</title>
+      <meta property="og:description" content="Admin" />
+      <meta property="og:title" content="Admin" />
+    </Helmet>
     <div className="w-full max-w-md p-6">
       <div className="bg-[#262428] border border-gray-600 rounded-xl shadow-2xl p-8">
         {/* 헤더 */}

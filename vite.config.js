@@ -12,7 +12,7 @@ export default defineConfig({
     prerender({
       routes: ["/", "/lb", "/submit", "/admin"],
       renderer: new PuppeteerRenderer({
-        renderAfterTime: 5000,
+        renderAfterDocumentEvent: "render",
         headless: true,
       }),
     }),

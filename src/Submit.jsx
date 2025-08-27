@@ -422,17 +422,16 @@ const Submit = () => {
       className="min-h-screen pt-20"
       style={{ backgroundColor: "#19181B", color: "#FFFFFF" }}
     >
+      {/* Meta */}
+      <Helmet>
+        <title>기록 제출</title>
+        <meta
+          property="og:description"
+          content="한국의 리썰컴퍼니 챌린지 리더보드"
+        />
+        <meta property="og:title" content="기록 제출" />
+      </Helmet>
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6">
-        {/* Meta */}
-        <Helmet>
-          <title>기록 제출</title>
-          <meta
-            property="og:description"
-            content="한국의 리썰컴퍼니 챌린지 리더보드"
-          />
-          <meta property="og:title" content="기록 제출" />
-        </Helmet>
-
         <div className="text-center mb-8">
           <h1 className="text-3xl sm:text-4xl font-bold mb-4 bg-gradient-to-r from-[#FF3E3E] via-[#FF3E3E] to-[#FFDF3E] bg-clip-text text-transparent">
             기록 제출하기
