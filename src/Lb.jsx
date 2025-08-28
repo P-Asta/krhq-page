@@ -509,7 +509,7 @@ const Lb = () => {
                           <>/ {entry.maxQuota.toLocaleString()} </>
                         )}
                         {activeTab != "SDC" && (
-                          <span className="text-gray-500">
+                          <span className="text-gray-500 pl-1">
                             q{entry.q.toLocaleString()}
                           </span>
                         )}
