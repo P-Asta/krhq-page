@@ -18,6 +18,7 @@ const Submit = () => {
     teamMembers: ["", "", "", ""],
     category: "",
     moon: "",
+    version: "v72", // 기본값을 v72로 설정
     singleDayEarnings: "",
     quotaAchieved: "",
     quotaReached: "",
@@ -30,6 +31,7 @@ const Submit = () => {
     discordJoined: false,
     category: false,
     moon: false,
+    version: false, // version 드롭다운 상태 추가
   });
 
   const [errors, setErrors] = useState({});
@@ -58,6 +60,19 @@ const Submit = () => {
     "Titan",
     "Artifice",
     "Embrion",
+  ];
+
+  // 버전 옵션 추가
+  const versionOptions = [
+    "v40",
+    "v45",
+    "v49",
+    "v50",
+    "v56",
+    "v62",
+    "v64",
+    "v69",
+    "v72",
   ];
 
   const handleInputChange = (field, value) => {
@@ -168,6 +183,11 @@ const Submit = () => {
       newErrors.category = "참가종목을 선택해주세요";
     }
 
+    // 버전 검증
+    if (!formData.version) {
+      newErrors.version = "버전을 선택해주세요";
+    }
+
     // 조건부 필드 검증
     if (shouldShowMoon() && !formData.moon) {
       newErrors.moon = "행성을 선택해주세요";
@@ -255,6 +275,7 @@ const Submit = () => {
         JSON.stringify(formData.teamMembers)
       );
       formDataToSend.append("category", formData.category);
+      formDataToSend.append("version", formData.version); // 버전 필드 추가
 
       // 조건부 데이터 추가
       if (formData.moon) formDataToSend.append("moon", formData.moon);
@@ -566,6 +587,22 @@ const Submit = () => {
                   placeholder="종목을 선택해주세요"
                   error={errors.category}
                   fieldName="category"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  게임 버전 *
+                </label>
+                <Dropdown
+                  value={formData.version}
+                  options={versionOptions}
+                  isOpen={dropdowns.version}
+                  onToggle={() => toggleDropdown("version")}
+                  onChange={(value) => handleInputChange("version", value)}
+                  placeholder="버전을 선택해주세요"
+                  error={errors.version}
+                  fieldName="version"
                 />
               </div>
 
