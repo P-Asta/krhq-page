@@ -162,7 +162,7 @@ const Lb = () => {
   };
 
   useEffect(() => {
-    fetch(`https://f.asta.rs/krhq/hqhq.json#${Number(new Date())}`)
+    fetch(`https://f.asta.rs/krhq/hqhq.json?t=${Number(new Date())}`)
       .then((res) => res.text())
       .then((data) => setLeaderboardData(eval(data)))
       .catch((err) => {
@@ -173,33 +173,35 @@ const Lb = () => {
 
   // 필터링된 데이터 계산
   const filteredData = useMemo(() => {
-    return leaderboardData
-      .filter((entry) => {
-        // 탭 필터링
-        if (entry.category !== activeTab) return false;
+    let lbd = leaderboardData.filter((entry) => {
+      // 탭 필터링
+      if (entry.category !== activeTab) return false;
 
-        // 플레이어 수 필터링 (0 Player는 필터 적용 안함)
-        if (selectedPlayers !== "0 Player") {
-          const playerCount = parseInt(selectedPlayers.split(" ")[0]);
-          if (entry.players.length !== playerCount) return false;
-        }
+      // 플레이어 수 필터링 (0 Player는 필터 적용 안함)
+      if (selectedPlayers !== "0 Player") {
+        const playerCount = parseInt(selectedPlayers.split(" ")[0]);
+        if (entry.players.length !== playerCount) return false;
+      }
 
-        // 버전 필터링 (v0는 필터 적용 안함)
-        if (selectedVersion !== "v0") {
-          if (entry.version !== selectedVersion) return false;
-        }
+      // 버전 필터링 (v0는 필터 적용 안함)
+      if (selectedVersion !== "v0") {
+        if (entry.version !== selectedVersion) return false;
+      }
 
-        // 맵/문 필터링 (moon은 필터 적용 안함, SDC와 SMHQ 탭에서만 적용)
-        if (
-          (activeTab === "SDC" || activeTab === "SMHQ") &&
-          selectedMoon !== "moon"
-        ) {
-          if (entry.moon !== selectedMoon) return false;
-        }
+      // 맵/문 필터링 (moon은 필터 적용 안함, SDC와 SMHQ 탭에서만 적용)
+      if (
+        (activeTab === "SDC" || activeTab === "SMHQ") &&
+        selectedMoon !== "moon"
+      ) {
+        if (entry.moon !== selectedMoon) return false;
+      }
 
-        return true;
-      })
-      .sort((x) => -x.maxQuota);
+      return true;
+    });
+    console.log("before", lbd);
+    lbd.sort((a, b) => b.fillQuota - a.fillQuota);
+    console.log("after", lbd);
+    return lbd;
   }, [
     leaderboardData,
     activeTab,
@@ -503,10 +505,10 @@ const Lb = () => {
                         className="text-base sm:text-lg font-medium mb-1 sm:mb-0"
                         style={{ color: "#FFFFFF" }}
                       >
-                        {entry.fillQuota.toLocaleString()}
+                        {entry.maxQuota.toLocaleString()}
                         {filteredData[0].maxQuota !=
                           filteredData[0].fillQuota && (
-                          <>/ {entry.maxQuota.toLocaleString()} </>
+                          <>&nbsp;/&nbsp;{entry.fillQuota.toLocaleString()} </>
                         )}
                         {activeTab != "SDC" && (
                           <span className="text-gray-500 pl-1">
