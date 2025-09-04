@@ -657,32 +657,6 @@ const Submit = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div>
                     <label className="block text-sm font-medium mb-2">
-                      몇 쿼터를 달성하였나요? *
-                    </label>
-                    <input
-                      ref={(el) => (fieldRefs.current.quotaAchieved = el)}
-                      type="number"
-                      value={formData.quotaAchieved}
-                      onChange={(e) =>
-                        handleInputChange("quotaAchieved", e.target.value)
-                      }
-                      className={`w-full bg-[#2D2C30] text-[#FFFFFF] px-3 py-2 rounded text-sm border-2 ${
-                        errors.quotaAchieved
-                          ? "border-red-500"
-                          : "border-transparent"
-                      } focus:outline-none focus:ring-2 focus:ring-[#FF3E3E]`}
-                      placeholder="예: 10"
-                      required
-                    />
-                    {errors.quotaAchieved && (
-                      <div className="flex items-center gap-1 mt-1 text-red-400 text-xs">
-                        <AlertCircle className="w-3 h-3" />
-                        <span>{errors.quotaAchieved}</span>
-                      </div>
-                    )}
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2">
                       할당량을 얼마나 도달했나요? *
                     </label>
                     <input
@@ -730,6 +704,32 @@ const Submit = () => {
                       <div className="flex items-center gap-1 mt-1 text-red-400 text-xs">
                         <AlertCircle className="w-3 h-3" />
                         <span>{errors.quotaFilled}</span>
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-2">
+                      몇 쿼터를 달성하였나요? *
+                    </label>
+                    <input
+                      ref={(el) => (fieldRefs.current.quotaAchieved = el)}
+                      type="number"
+                      value={formData.quotaAchieved}
+                      onChange={(e) =>
+                        handleInputChange("quotaAchieved", e.target.value)
+                      }
+                      className={`w-full bg-[#2D2C30] text-[#FFFFFF] px-3 py-2 rounded text-sm border-2 ${
+                        errors.quotaAchieved
+                          ? "border-red-500"
+                          : "border-transparent"
+                      } focus:outline-none focus:ring-2 focus:ring-[#FF3E3E]`}
+                      placeholder="예: 10"
+                      required
+                    />
+                    {errors.quotaAchieved && (
+                      <div className="flex items-center gap-1 mt-1 text-red-400 text-xs">
+                        <AlertCircle className="w-3 h-3" />
+                        <span>{errors.quotaAchieved}</span>
                       </div>
                     )}
                   </div>
