@@ -363,12 +363,15 @@ const SubmissionAdmin = () => {
   };
 
   // 파일 다운로드
-  const downloadVlogFile = (content, playerName, submissionId) => {
+  const downloadVlogFile = (content, playerName, filename) => {
     const blob = new Blob([content], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `${submissionId}_${playerName.replace(/\s+/g, "_")}.log`;
+    // 파일명에서 특수문자 제거하고 안전한 이름으로 변경
+    const safePlayerName = playerName.replace(/[^a-zA-Z0-9가-힣]/g, "_");
+    const safeFilename = filename.replace(/[^a-zA-Z0-9가-힣._-]/g, "_");
+    a.download = `${safePlayerName}_${safeFilename}`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -528,7 +531,7 @@ const SubmissionAdmin = () => {
     );
   };
 
-  // VLog 표시 컴포넌트
+  // VLog 파일 다운로드 섹션 컴포넌트
   const VlogSection = ({ submissionId }) => {
     const isExpanded = expandedVlogs[submissionId];
     const isLoading = loadingVlogs[submissionId];
@@ -541,7 +544,7 @@ const SubmissionAdmin = () => {
           className="flex items-center gap-2 text-sm text-blue-400 hover:text-blue-300 transition-colors mb-3"
         >
           <FileText />
-          VLog 파일 보기
+          VLog 파일 다운로드
           {isExpanded ? <ChevronUp /> : <ChevronDown />}
         </button>
 
@@ -552,90 +555,98 @@ const SubmissionAdmin = () => {
                 <RefreshCw className="w-4 h-4 animate-spin" />
                 VLog 파일을 불러오는 중...
               </div>
-            ) : data ? (
+            ) : data && data.players ? (
               <div className="space-y-4">
                 <div className="text-sm text-gray-400 mb-3">
-                  총 {data.vlog_files_count}개의 VLog 파일
+                  총 {data.total_files}개의 VLog 파일
                 </div>
 
-                {data.vlog_contents &&
-                  data.vlog_contents.map((vlog, index) => (
-                    <div
-                      key={index}
-                      className="border border-gray-600 rounded-lg overflow-hidden"
-                    >
-                      {/* VLog 헤더 */}
-                      <div className="bg-[#262428] px-4 py-3 border-b border-gray-600">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <User />
-                            <span className="font-medium text-white">
-                              {vlog.player_name ||
-                                `Player ${vlog.player_index}`}
-                            </span>
-                            <span className="text-xs text-gray-400">
-                              (Player {vlog.player_index})
-                            </span>
-                          </div>
-
-                          {vlog.content && (
-                            <div className="flex items-center gap-2">
-                              <span className="text-xs text-gray-400">
-                                {vlog.file_size
-                                  ? `${(vlog.file_size / 1024).toFixed(1)}KB`
-                                  : ""}
-                                {vlog.line_count
-                                  ? ` • ${vlog.line_count} lines`
-                                  : ""}
-                              </span>
-                              <button
-                                onClick={() => copyToClipboard(vlog.content)}
-                                className="p-1 text-gray-400 hover:text-white transition-colors"
-                                title="클립보드에 복사"
-                              >
-                                <Copy />
-                              </button>
-                              <button
-                                onClick={() =>
-                                  downloadVlogFile(
-                                    vlog.content,
-                                    vlog.player_name ||
-                                      `Player_${vlog.player_index}`,
-                                    submissionId
-                                  )
-                                }
-                                className="p-1 text-gray-400 hover:text-white transition-colors"
-                                title="파일 다운로드"
-                              >
-                                <Download />
-                              </button>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* VLog 내용 */}
-                      <div className="p-4">
-                        {vlog.error ? (
-                          <div className="text-red-400 text-sm flex items-center">
-                            <AlertCircle />
-                            <span className="ml-2">Error: {vlog.error}</span>
-                          </div>
-                        ) : vlog.content ? (
-                          <div className="bg-black rounded p-3 overflow-x-auto max-h-60">
-                            <pre className="text-xs text-green-400 font-mono whitespace-pre-wrap">
-                              {vlog.content.slice(0, 2000)}
-                              {vlog.content.length > 2000 && "\n......."}
-                            </pre>
-                          </div>
-                        ) : (
-                          <div className="text-gray-400 text-sm">
-                            VLog 내용을 불러올 수 없습니다.
-                          </div>
-                        )}
+                {data.players.map((player, playerIndex) => (
+                  <div
+                    key={playerIndex}
+                    className="border border-gray-600 rounded-lg overflow-hidden"
+                  >
+                    {/* 플레이어 헤더 */}
+                    <div className="bg-[#262428] px-4 py-3 border-b border-gray-600">
+                      <div className="flex items-center gap-2">
+                        <User className="w-4 h-4" />
+                        <span className="font-medium text-white">
+                          {player.player_name}
+                        </span>
+                        <span className="text-xs text-gray-400">
+                          (Player {player.player_number})
+                        </span>
+                        <span className="text-xs text-gray-400">
+                          • {player.files.length}개 파일
+                        </span>
                       </div>
                     </div>
-                  ))}
+
+                    {/* 파일 목록 */}
+                    <div className="p-4">
+                      <div className="grid gap-2">
+                        {player.files.map((file, fileIndex) => (
+                          <div
+                            key={fileIndex}
+                            className="flex items-center justify-between p-3 bg-[#2D2C30] rounded-lg"
+                          >
+                            <div className="flex items-center gap-3">
+                              <FileText className="w-4 h-4 text-blue-400" />
+                              <div>
+                                <div className="text-sm text-white font-medium">
+                                  {file.file_name}
+                                </div>
+                                {file.error ? (
+                                  <div className="text-xs text-red-400 flex items-center gap-1">
+                                    <AlertCircle className="w-3 h-3" />
+                                    {file.error}
+                                  </div>
+                                ) : (
+                                  <div className="text-xs text-gray-400">
+                                    {file.file_size
+                                      ? `${(file.file_size / 1024).toFixed(
+                                          1
+                                        )}KB`
+                                      : "크기 정보 없음"}
+                                    {file.line_count
+                                      ? ` • ${file.line_count} lines`
+                                      : ""}
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* 다운로드 버튼 */}
+                            {file.content && !file.error && (
+                              <div className="flex items-center gap-2">
+                                <button
+                                  onClick={() => copyToClipboard(file.content)}
+                                  className="p-2 text-gray-400 hover:text-white transition-colors bg-[#19181B] rounded"
+                                  title="클립보드에 복사"
+                                >
+                                  <Copy className="w-4 h-4" />
+                                </button>
+                                <button
+                                  onClick={() =>
+                                    downloadVlogFile(
+                                      file.content,
+                                      player.player_name,
+                                      `${submissionId}_${file.file_name}`
+                                    )
+                                  }
+                                  className="p-2 text-blue-400 hover:text-blue-300 transition-colors bg-[#19181B] rounded"
+                                  title="파일 다운로드"
+                                >
+                                  <Download className="w-4 h-4" />
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             ) : (
               <div className="text-gray-400 text-sm">
