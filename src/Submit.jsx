@@ -379,7 +379,7 @@ const Submit = () => {
       setUploadProgress(80 + Math.floor(Math.random() * 41) - 20);
       setUploadStatus("vlog파일이 많을수록 오래걸려요!");
 
-      const response = await fetch("http://127.0.0.1:1041/submit-record", {
+      const response = await fetch("https://api.hqhq.kr/submit-record", {
         method: "POST",
         body: formDataToSend,
       });
