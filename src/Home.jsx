@@ -80,6 +80,7 @@ const Home = () => {
       "MoreItems — Drakorle",
       "TooManyItems — mattymatty",
       "PathfindingLagFix — Zaggy1024",
+      "FontPatcher — LeKAKiD (한국어 보이게 해주는모드)",
       "NoSellLimit — ViVKo",
       "ToggleMute — quackandcheese",
       "LCBetterSaves — Pooble",
