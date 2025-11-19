@@ -23,6 +23,7 @@ const Lb = () => {
     "v64",
     "v69",
     "v72",
+    "v73",
   ];
   const moonOptions = [
     "moon",
