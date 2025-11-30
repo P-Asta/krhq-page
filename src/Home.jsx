@@ -89,6 +89,8 @@ const Home = () => {
       "LightsOut — mrov",
       "StreamOverlays — Zehs",
       "SellMyScrap — Zehs",
+      "BetterCruiserSync — MysticDEV",
+      "LCMaxSoundFix — Hardy",
       "LethalSpongeLegacy — Scoops",
     ],
   };

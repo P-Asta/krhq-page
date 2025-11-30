@@ -247,25 +247,6 @@ const Submit = () => {
       newErrors.teamMembers = "최소 한 명의 팀원 닉네임을 입력해주세요";
     }
 
-    // 로그 파일 검증
-    const activeTeamMembers = getActiveTeamMembers();
-    const missingLogFiles = [];
-
-    activeTeamMembers.forEach((member, index) => {
-      const playerFiles = formData.vlogFiles[index] || [];
-      const hasValidFiles = playerFiles.some((file) => file && file !== null);
-
-      if (!hasValidFiles) {
-        missingLogFiles.push(member || `플레이어 ${index + 1}`);
-      }
-    });
-
-    if (missingLogFiles.length > 0) {
-      newErrors.vlogFiles = `다음 플레이어의 로그 파일이 필요합니다: ${missingLogFiles.join(
-        ", "
-      )}`;
-    }
-
     return newErrors;
   };
 
@@ -339,6 +320,8 @@ const Submit = () => {
 
       // 파일 추가 - 백엔드에서 요구하는 형식으로 파일명 변경
       setUploadStatus("로그 파일 처리 중...");
+      const activeTeamMembers = getActiveTeamMembers();
+      const playersWithFiles = new Set();
       let totalFiles = 0;
       let processedFiles = 0;
 
@@ -353,8 +336,9 @@ const Submit = () => {
 
       formData.vlogFiles.forEach((playerFiles, playerIndex) => {
         if (playerFiles && Array.isArray(playerFiles)) {
-          playerFiles.forEach((file, fileIndex) => {
+          playerFiles.forEach((file) => {
             if (file) {
+              playersWithFiles.add(playerIndex);
               // 파일명을 player{N}_{originalname} 형식으로 변경
               const modifiedFile = new File(
                 [file],
@@ -376,6 +360,21 @@ const Submit = () => {
           });
         }
       });
+
+      activeTeamMembers.forEach((_, playerIndex) => {
+        if (!playersWithFiles.has(playerIndex)) {
+          const emptyFile = new File(
+            [""],
+            `player${playerIndex + 1}_empty.log`,
+            { type: "text/plain" }
+          );
+          formDataToSend.append("vlog_files", emptyFile);
+        }
+      });
+
+      if (totalFiles === 0) {
+        setUploadStatus("로그 파일이 없어 빈 파일을 전송했어요");
+      }
 
       setUploadProgress(80 + Math.floor(Math.random() * 41) - 20);
       setUploadStatus("vlog파일이 많을수록 오래걸려요!");
@@ -510,6 +509,7 @@ const Submit = () => {
               {uploadProgress}%
             </span>
           </div>
+          련
           <div className="w-full bg-gray-700 rounded-full h-2">
             <div
               className="bg-gradient-to-r from-[#FF3E3E] to-[#FFDF3E] h-2 rounded-full transition-all duration-300 ease-out"
@@ -917,7 +917,8 @@ const Submit = () => {
 
             <div className="space-y-6">
               <p className="text-sm text-gray-400 mb-4">
-                .log 파일을 업로드해주세요 (각 플레이어당 최소 1개) *
+                .log 파일이 있다면 업로드해주세요. (Vlog 3.0.0 이상 버전을
+                사용한다면 무시해도 됨)
               </p>
               {getActiveTeamMembers().map((member, playerIndex) => (
                 <div
@@ -926,7 +927,6 @@ const Submit = () => {
                 >
                   <label className="block text-sm font-medium mb-3">
                     {member || `플레이어 ${playerIndex + 1}`}의 로그 파일 (.log)
-                    *
                   </label>
                   <div className="space-y-3">
                     {(formData.vlogFiles[playerIndex] || [null]).map(
@@ -994,12 +994,6 @@ const Submit = () => {
                   </div>
                 </div>
               ))}
-              {errors.vlogFiles && (
-                <div className="flex items-center gap-1 mt-2 text-red-400 text-xs">
-                  <AlertCircle className="w-3 h-3" />
-                  <span>{errors.vlogFiles}</span>
-                </div>
-              )}
             </div>
           </div>
 
