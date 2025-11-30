@@ -917,8 +917,7 @@ const Submit = () => {
 
             <div className="space-y-6">
               <p className="text-sm text-gray-400 mb-4">
-                .log 파일이 있다면 업로드해주세요. (Vlog 3.0.0 이상 버전을
-                사용한다면 무시해도 됨)
+                vlog 파일을 업로드해주세요. (Vlog 2.1.16 이하 버전만)
               </p>
               {getActiveTeamMembers().map((member, playerIndex) => (
                 <div
