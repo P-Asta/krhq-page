@@ -17,7 +17,7 @@ const Submit = () => {
     teamMembers: ["", "", "", ""],
     category: "",
     moon: "",
-    version: "v73", // 기본값을 v73로 설정
+    version: "v81", // 기본값을 v73로 설정
     singleDayEarnings: "",
     quotaAchieved: "",
     quotaReached: "",
@@ -75,6 +75,7 @@ const Submit = () => {
     "v69",
     "v72",
     "v73",
+    "v81"
   ];
 
   const handleInputChange = (field, value) => {
